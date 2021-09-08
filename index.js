@@ -13,7 +13,19 @@ const { buildSlackAttachments, formatChannelName } = require('./src/utils');
     const actor = core.getInput('actor');
     const repoUrl = core.getInput('repo_url');
     const token = process.env.SLACK_BOT_TOKEN;
-    const slack = new WebClient(token);
+    const slack = new WebClient(token,{
+      slackApiUrl = 'https://mattermost.h4k.co/api/',
+      logger = undefined,
+      logLevel = undefined,
+      maxRequestConcurrency = 3,
+      retryConfig = retryPolicies.tenRetriesInAboutThirtyMinutes,
+      agent = undefined,
+      tls = undefined,
+      timeout = 0,
+      rejectRateLimitedCalls = false,
+      headers = {},
+      teamId = undefined,
+    });
 
     if (!channel && !core.getInput('channel_id')) {
       core.setFailed(`You must provider either a 'channel' or a 'channel_id'.`);
